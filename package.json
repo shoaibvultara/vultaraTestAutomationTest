@@ -1,0 +1,26 @@
+{
+  "name": "cypress",
+  "version": "1.0.0",
+  "description": "Web Automation project.",
+  "main": "index.js",
+  "author": "Automation Team",
+  "license": "ISC",
+  "devDependencies": {
+    "@cypress/skip-test": "^2.5.0",
+    "@faker-js/faker": "^6.0.0",
+    "cypress": "^13.6.3",
+    "cypress-delete-downloads-folder": "^0.0.4",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-localstorage-commands": "^1.7.0",
+    "cypress-log-to-output": "^1.1.2",
+    "cypress-mochawesome-reporter": "^2.0.1",
+    "cypress-recurse": "^1.35.2",
+    "cypress-wait-until": "^1.7.1",
+    "cypress-xpath": "1.6.0"
+  },
+  "dependencies": {
+    "@4tw/cypress-drag-drop": "^2.1.0",
+    "cypress-aiotests-reporter": "^1.2.0",
+    "cypress-real-events": "^1.7.0"
+  }
+}
