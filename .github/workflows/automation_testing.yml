@@ -28,7 +28,7 @@ jobs:
       - name: Update Cypress config
         run: |
           echo "Base URL is:  ${{github.event.inputs.environment}} bainchod"
-          sed -i 's#baseURL: "http://localhost:4200"#baseURL: ${{github.event.inputs.environment}}#' cypress.config.js
+          sed -i 's#baseURL: "http://localhost:4200"#baseURL: "${{github.event.inputs.environment}}"#' cypress.config.js
           sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "https://awsportal.api.vultara.com/api"#' cypress.config.js
           sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "https://awsportal.auth.vultara.com/auth"#' cypress.config.js
           sed -i 's#username: "vultara_automation_test"#username: "shoaibadmin"#' cypress.config.js
