@@ -1,33 +1,15 @@
 name: Cypress Tests
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manually trigger the workflow
     inputs:
-      baseURL:
-        description: 'Base URL'
-        required: true
-      apiURL:
-        description: 'API URL'
-        required: true
-      authURL:
-        description: 'Auth URL'
-        required: true
-      username:
-        description: 'Username'
-        required: true
-      password:
-        description: 'Password'
-        required: true
-
+      environment:
+          description: 'Base URL'
+          required: true
+          
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
-    env:
-      BASE_URL: ${{ github.event.inputs.baseURL }}
-      API_URL: ${{ github.event.inputs.apiURL }}
-      AUTH_URL: ${{ github.event.inputs.authURL }}
-      USERNAME: ${{ github.event.inputs.username }}
-      PASSWORD: ${{ github.event.inputs.password }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,15 +20,19 @@ jobs:
           node-version: "16"
           cache: "npm"
 
-      # Update Cypress config with user-provided values
+      # Install npm dependencies from the cypress directory
+      - name: Install Dependencies
+        run: npm install
+
+      # Update Cypress config with new values
       - name: Update Cypress config
         run: |
-          sed -i "s#baseURL: \"http://localhost:4200\"#baseURL: \"$BASE_URL\"#" cypress.config.js
-          sed -i "s#apiURL: \"http://localhost:4201/api\"#apiURL: \"$API_URL\"#" cypress.config.js
-          sed -i "s#authURL: \"http://localhost:4321/auth\"#authURL: \"$AUTH_URL\"#" cypress.config.js
-          sed -i "s#username: \"vultara_automation_test\"#username: \"$USERNAME\"#" cypress.config.js
-          sed -i "s#password: \"tJVJhiHmlIWR\"#password: \"$PASSWORD\"#" cypress.config.js
-
+          echo "Base URL is " ${{github.event.inputs.environment}} bainchod"
+          sed -i 's#baseURL: "http://localhost:4200"#baseURL: "https://awsportal.vultara.com"#' cypress.config.js
+          sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "https://awsportal.api.vultara.com/api"#' cypress.config.js
+          sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "https://awsportal.auth.vultara.com/auth"#' cypress.config.js
+          sed -i 's#username: "vultara_automation_test"#username: "shoaibadmin"#' cypress.config.js
+          sed -i 's#password: "tJVJhiHmlIWR"#password: "PAKistan@123"#' cypress.config.js
       # Run Cypress test for specific file with recording
       - name: Cypress run
         run: npx cypress run --record --key f58d85e0-bb42-4a92-a3a8-c6772e247b5a --spec cypress/e2e/customerEnvironment/highLevelTestCases.cy.js
