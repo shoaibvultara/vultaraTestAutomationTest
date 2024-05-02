@@ -22,14 +22,20 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
+    env:
+      BASE_URL: ${{ github.event.inputs.baseURL }}
+      API_URL: ${{ github.event.inputs.apiURL }}
+      AUTH_URL: ${{ github.event.inputs.authURL }}
+      USERNAME: ${{ github.event.inputs.username }}
+      PASSWORD: ${{ github.event.inputs.password }}
     steps:
       - name: Debug inputs
         run: |
-          echo "Username: ${{ github.event.inputs.username }}"
-          echo "Password: ${{ github.event.inputs.password }}"
-          echo "Base URL: ${{ github.event.inputs.baseURL }}"
-          echo "API URL: ${{ github.event.inputs.apiURL }}"
-          echo "Auth URL: ${{ github.event.inputs.authURL }}"
+          echo "Username: $USERNAME"
+          echo "Password: $PASSWORD"
+          echo "Base URL: $BASE_URL"
+          echo "API URL: $API_URL"
+          echo "Auth URL: $AUTH_URL"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,11 +53,11 @@ jobs:
       # Update Cypress config with new values
       - name: Update Cypress config
         run: |
-          perl -pi -e 's#baseURL: 'http://localhost:4200'#baseURL: "$ENV{INPUT_BASEURL}"#' cypress.config.js
-          perl -pi -e 's#apiURL: 'http://localhost:4201/api'#apiURL: "$ENV{INPUT_APIURL}"#' cypress.config.js
-          perl -pi -e 's#authURL: 'http://localhost:4321/auth'#authURL: "$ENV{INPUT_AUTHURL}"#' cypress.config.js
-          perl -pi -e 's#username: 'vultara_automation_test'#username: "$ENV{INPUT_USERNAME}"#' cypress.config.js
-          perl -pi -e 's#password: 'tJVJhiHmlIWR'#password: "$ENV{INPUT_PASSWORD}"#' cypress.config.js
+          perl -pi -e 's#baseURL: 'http://localhost:4200'#baseURL: "'"$BASE_URL"'"#' cypress.config.js
+          perl -pi -e 's#apiURL: 'http://localhost:4201/api'#apiURL: "'"$API_URL"'"#' cypress.config.js
+          perl -pi -e 's#authURL: 'http://localhost:4321/auth'#authURL: "'"$AUTH_URL"'"#' cypress.config.js
+          perl -pi -e 's#username: 'vultara_automation_test'#username: "'"$USERNAME"'"#' cypress.config.js
+          perl -pi -e 's#password: 'tJVJhiHmlIWR'#password: "'"$PASSWORD"'"#' cypress.config.js
 
       # Run Cypress test for specific file with recording
       - name: Cypress run
