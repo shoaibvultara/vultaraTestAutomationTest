@@ -9,6 +9,15 @@ on:
       password:
         description: 'Password for authentication'
         required: true
+      baseURL:
+        description: 'Base URL for the application'
+        required: true
+      apiURL:
+        description: 'API URL for the application'
+        required: true
+      authURL:
+        description: 'Authentication URL for the application'
+        required: true
 
 jobs:
   cypress-run:
@@ -32,9 +41,9 @@ jobs:
       # Update Cypress config with new values
       - name: Update Cypress config
         run: |
-          sed -i 's#baseURL: "http://localhost:4200"#baseURL: "https://awsportal.vultara.com"#' cypress.config.js
-          sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "https://awsportal.api.vultara.com/api"#' cypress.config.js
-          sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "https://awsportal.auth.vultara.com/auth"#' cypress.config.js
+          sed -i 's#baseURL: "http://localhost:4200"#baseURL: "${{ github.event.inputs.baseURL }}"#' cypress.config.js
+          sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "${{ github.event.inputs.apiURL }}"#' cypress.config.js
+          sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "${{ github.event.inputs.authURL }}"#' cypress.config.js
           sed -i 's#username: "vultara_automation_test"#username: "${{ github.event.inputs.username }}"#' cypress.config.js
           sed -i 's#password: "tJVJhiHmlIWR"#password: "${{ github.event.inputs.password }}"#' cypress.config.js
 
