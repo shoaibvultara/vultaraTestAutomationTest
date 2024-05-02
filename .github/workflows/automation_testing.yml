@@ -1,7 +1,14 @@
-name: Cypress Tests
+name: Customer Environment Automation Test 
 
 on:
   workflow_dispatch: # Manually trigger the workflow
+    inputs:
+      username:
+        description: 'Username for authentication'
+        required: true
+      password:
+        description: 'Password for authentication'
+        required: true
 
 jobs:
   cypress-run:
@@ -28,8 +35,9 @@ jobs:
           sed -i 's#baseURL: "http://localhost:4200"#baseURL: "https://awsportal.vultara.com"#' cypress.config.js
           sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "https://awsportal.api.vultara.com/api"#' cypress.config.js
           sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "https://awsportal.auth.vultara.com/auth"#' cypress.config.js
-          sed -i 's#username: "vultara_automation_test"#username: "shoaibadmin"#' cypress.config.js
-          sed -i 's#password: "tJVJhiHmlIWR"#password: "PAKistan@123"#' cypress.config.js
+          sed -i 's#username: "vultara_automation_test"#username: "${{ github.event.inputs.username }}"#' cypress.config.js
+          sed -i 's#password: "tJVJhiHmlIWR"#password: "${{ github.event.inputs.password }}"#' cypress.config.js
+
       # Run Cypress test for specific file with recording
       - name: Cypress run
-        run: npx cypress run --record --key f58d85e0-bb42-4a92-a3a8-c6772e247b5a --spec cypress/e2e/customerEnvironment/highLevelTestCases.cy.js
+        run: npx cypress run --spec cypress/e2e/customerEnvironment/highLevelTestCases.cy.js
