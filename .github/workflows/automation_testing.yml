@@ -23,6 +23,14 @@ jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
+      - name: Debug inputs
+        run: |
+          echo "Username: ${{ github.event.inputs.username }}"
+          echo "Password: ${{ github.event.inputs.password }}"
+          echo "Base URL: ${{ github.event.inputs.baseURL }}"
+          echo "API URL: ${{ github.event.inputs.apiURL }}"
+          echo "Auth URL: ${{ github.event.inputs.authURL }}"
+
       - name: Checkout
         uses: actions/checkout@v4
     
