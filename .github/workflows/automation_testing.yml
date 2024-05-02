@@ -1,28 +1,21 @@
-name: Customer Environment Automation Test 
+name: Cypress Tests
 
 on:
   workflow_dispatch: # Manually trigger the workflow
-    inputs:
-      username:
-        description: 'Username for authentication'
-        required: true
-      password:
-        description: 'Password for authentication'
-        required: true
-      baseURL:
-        description: 'Base URL for the application'
-        required: true
-      apiURL:
-        description: 'API URL for the application'
-        required: true
-      authURL:
-        description: 'Authentication URL for the application'
-        required: true
 
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
+      - name: Ask for Credentials and URLs
+        id: inputs
+        run: |
+          echo "::set-output name=username::$(read -p 'Enter username: ' username && echo $username)"
+          echo "::set-output name=password::$(read -sp 'Enter password: ' password && echo $password)"
+          echo "::set-output name=baseURL::$(read -p 'Enter base URL: ' baseURL && echo $baseURL)"
+          echo "::set-output name=apiURL::$(read -p 'Enter API URL: ' apiURL && echo $apiURL)"
+          echo "::set-output name=authURL::$(read -p 'Enter auth URL: ' authURL && echo $authURL)"
+      
       - name: Checkout
         uses: actions/checkout@v4
     
@@ -41,12 +34,12 @@ jobs:
       # Update Cypress config with new values
       - name: Update Cypress config
         run: |
-          sed -i 's#baseURL: "http://localhost:4200"#baseURL: "${{ github.event.inputs.baseURL }}"#' cypress.config.js
-          sed -i 's#apiURL: "http://localhost:4201/api"#apiURL: "${{ github.event.inputs.apiURL }}"#' cypress.config.js
-          sed -i 's#authURL: "http://localhost:4321/auth"#authURL: "${{ github.event.inputs.authURL }}"#' cypress.config.js
-          sed -i 's#username: "vultara_automation_test"#username: "${{ github.event.inputs.username }}"#' cypress.config.js
-          sed -i 's#password: "tJVJhiHmlIWR"#password: "${{ github.event.inputs.password }}"#' cypress.config.js
+          sed -i "s#baseURL: \"http://localhost:4200\"#baseURL: \"${{ steps.inputs.outputs.baseURL }}\"#" cypress.config.js
+          sed -i "s#apiURL: \"http://localhost:4201/api\"#apiURL: \"${{ steps.inputs.outputs.apiURL }}\"#" cypress.config.js
+          sed -i "s#authURL: \"http://localhost:4321/auth\"#authURL: \"${{ steps.inputs.outputs.authURL }}\"#" cypress.config.js
+          sed -i "s#username: \"vultara_automation_test\"#username: \"${{ steps.inputs.outputs.username }}\"#" cypress.config.js
+          sed -i "s#password: \"tJVJhiHmlIWR\"#password: \"${{ steps.inputs.outputs.password }}\"#" cypress.config.js
 
       # Run Cypress test for specific file with recording
       - name: Cypress run
-        run: npx cypress run --spec cypress/e2e/customerEnvironment/highLevelTestCases.cy.js
+        run: npx cypress run --record --key f58d85e0-bb42-4a92-a3a8-c6772e247b5a --spec cypress/e2e/customerEnvironment/highLevelTestCases.cy.js
