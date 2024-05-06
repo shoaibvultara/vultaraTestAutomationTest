@@ -22,5 +22,8 @@
     "@4tw/cypress-drag-drop": "^2.1.0",
     "cypress-aiotests-reporter": "^1.2.0",
     "cypress-real-events": "^1.7.0"
+  },
+  "scripts": {
+    "cypress:run": "cypress run"
   }
 }
