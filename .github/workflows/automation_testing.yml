@@ -47,8 +47,4 @@ jobs:
           sed -i 's#password: "tJVJhiHmlIWR"#password: "${{github.event.inputs.password}}"#' cypress.config.js
       # Run Cypress test for specific file with recording
       - name: Execute e2e automation tests
-        uses: cypress-io/github-action@v5
-        with:
-          working-directory: vultaraTestAutomation
-          spec: 'cypress/e2e/**/*.cy.js'
-          exclude: 'cypress/e2e/customerEnvironment/**/*.cy.js, cypress/e2e/Login/**/*.cy.js,cypress/e2e/attack-tree/**/*.cy.js'
+        run: npx cypress run --spec "!cypress/e2e/customerEnvironment/highLevelTestCases.cy.js, !cypress/e2e/Login/*.cy.js,!cypress/e2e/attack-tree/*.cy.js"
