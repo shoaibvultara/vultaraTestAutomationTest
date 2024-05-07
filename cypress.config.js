@@ -27,11 +27,11 @@ module.exports = defineConfig({
   },
   video: false,
   env: {
-    baseURL: "http://localhost:4200",
-    apiURL: "http://localhost:4201/api",
-    authURL: "http://localhost:4321/auth",
-    username: "vultara_automation_test",
-    password: "tJVJhiHmlIWR",
+    baseURL: "https://awsportal.vultara.com",
+    apiURL: "https://awsportal.api.vultara.com/api",
+    authURL: "https://awsportal.auth.vultara.com/auth",
+    username: "shoaibadmin",
+    password: "PAKistan@123",
     aioTests: {
       enableReporting: true,
       cloud: {
